@@ -1,20 +1,19 @@
-import React from 'react'
+import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import StudentLogin from './components/Auth/StudentLogin';
+import CoordinatorLogin from './components/Auth/CoordinatorLogin';
 
-const App = () => {
-  return (
-    <div>Programa Dual</div>
-  )
-}
-
-export default App
-
-if (document.getElementById('root')) {
-    const Index = ReactDOM.createRoot(document.getElementById("root"));
-
-    Index.render(
-        <React.StrictMode>
-            <App/>
-        </React.StrictMode>
-    )
+const root = document.getElementById('root');
+if (root) {
+  ReactDOM.createRoot(root).render(
+    <React.StrictMode>
+      <Router>
+        <Routes>
+          <Route path="/" element={<StudentLogin />} />
+          <Route path="/login-coordinador" element={<CoordinatorLogin />} />
+        </Routes>
+      </Router>
+    </React.StrictMode>,
+  );
 }

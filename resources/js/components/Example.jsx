@@ -18,13 +18,10 @@ function Example() {
 }
 
 export default Example;
-
 if (document.getElementById('root')) {
-    const Index = ReactDOM.createRoot(document.getElementById("root"));
-
-    Index.render(
-        <React.StrictMode>
-            <Example/>
-        </React.StrictMode>
-    )
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  )
 }
