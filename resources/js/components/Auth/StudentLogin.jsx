@@ -11,16 +11,16 @@ const StudentLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/login/estudiante', {
+      const { data } = await axios.post('/api/login/student', {
         no_control: noControl,
         password,
       });
 
-      localStorage.setItem('token', data.acces_token);
+      localStorage.setItem('token', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
 
       // TODO: ajusta la ruta tras login de estudiante
-      window.location.href = '/';
+      navigate('/students-home', { replace: true });
     } catch (err) {
       if (err.response?.data?.errors?.no_control) {
         setError(err.response.data.errors.no_control[0]);

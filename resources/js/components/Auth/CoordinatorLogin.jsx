@@ -11,7 +11,7 @@ const CoordinatorLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/login/coordinador', {
+      const { data } = await axios.post('/api/login/coordinator', {
         name,
         password,
       });

@@ -19,6 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
             'bindings' => SubstituteBindings::class,
             'throttle' => ThrottleRequests::class,
             'sanctum' => EnsureFrontendRequestsAreStateful::class,
+            'role'        => RoleMiddleware::class,
+            'permission'  => PermissionMiddleware::class,
+            'role_or_permission' => RoleOrPermissionMiddleware::class,
         ]);
 
         $middleware->group('api', [
