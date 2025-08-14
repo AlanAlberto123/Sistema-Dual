@@ -4,8 +4,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Api\AuthController;
-
-
+use App\Http\Controllers\Api\StudentController;
 
 Route::prefix('login')->group(function () {
     Route::post('/student',     [AuthController::class, 'loginStudent']);     // /api/login/student

@@ -18,6 +18,8 @@ const StudentLogin = () => {
 
       localStorage.setItem('token', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem('student', JSON.stringify(data.student));
+      axios.defaults.headers.common['Authorization'] = `Bearer ${data.access_token}`;
 
       // TODO: ajusta la ruta tras login de estudiante
       navigate('/students-home', { replace: true });
