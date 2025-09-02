@@ -7,6 +7,6 @@
   @vite('resources/js/App.jsx')
 </head>
 <body>
-  <div id="coordinator-login"></div>
+  <div id="root"></div>
 </body>
 </html>

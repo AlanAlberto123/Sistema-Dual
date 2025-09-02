@@ -13,60 +13,69 @@ class AuthController extends Controller
 {
     public function loginStudent(Request $request)
     {
-        $request->validate([
-            'no_control' => 'required|numeric',
-            'password' => 'required|string'
+        $data = $request->validate([
+            'no_control' => ['required','numeric'],   // o numeric si tu columna lo es
+            'password'   => ['required','string'],
         ]);
 
-        $student = Student::where('No_control', $request->no_control)->first();
-
-        if(!$student  || !Hash::check($request->password, $student->user->password)){
-            throw ValidationException::withMessages([
-                'no_control'=> ['Credenciales incorrectas.']
-            ]);
+        $student = Student::with('user')->where('No_control', $data['no_control'])->first();
+        if (! $student || ! $student->user) {
+            throw ValidationException::withMessages(['no_control'=>['Credenciales incorrectas.']]);
         }
 
-        $token = $student->user->createToken('student-token')->plainTextToken;
-
-        return response()->json([
-            'access_token' => $token,
-            'user' => $student->user,
-            'rol' => $student->user->rol,
-            'student' => $student,
-        ]);
-    }
-
-    public function loginCoordinator(Request $request){
-
-        $request->validate([
-            'name' => 'required|string',
-            'password' => 'required|string'
-        ]);
-
-        $user = User::where('name', $request->name)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)){
-            throw ValidationException::withMessages([
-               'name' => ['Credenciales invalidas.'],
-            ]);
+        $user = $student->user;
+        if (! Hash::check($data['password'], $user->password)) {
+            throw ValidationException::withMessages(['no_control'=>['Credenciales incorrectas.']]);
         }
 
-        if ($user->rol != 'coordinator') {
+        // SOLO estudiantes
+        if ($user->role !== 'student') {
             return response()->json(['error' => 'No autorizado'], 403);
         }
 
-        $token = $user->createToken('coordinator-token')->plainTextToken;
+        $token = $user->createToken('student-token', ['student'])->plainTextToken;
 
         return response()->json([
             'access_token' => $token,
-            'user' => $user,
-            'rol' => $user->rol,
+            'user'         => $user,
+            'role'         => $user->role,
+            'student'      => $student,
         ]);
     }
+
+    public function loginCoordinator(Request $request)
+{
+    $data = $request->validate([
+        'email'    => ['required','email'],
+        'password' => ['required','string'],
+    ]);
+
+    $email = strtolower(trim($data['email']));
+    $user = User::whereRaw('LOWER(email) = ?', [$email])->first();
+
+    if (! $user) {
+        throw ValidationException::withMessages(['email' => ['Credenciales inválidas.']]);
+    }
+    if (! Hash::check($data['password'], $user->password)) {
+        throw ValidationException::withMessages(['email' => ['Credenciales inválidas.']]);
+    }
+
+    if ($user->role !== 'coordinator' /* || ! $user->coordinator()->exists() */) {
+        return response()->json(['error' => 'No autorizado'], 403);
+    }
+
+    $token = $user->createToken('coordinator-token', ['coordinator'])->plainTextToken;
+
+    return response()->json([
+        'access_token' => $token,
+        'user'  => $user,
+        'role'  => $user->role,
+    ]);
+}
 
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
-        return response()->json(['message' => 'Sesion cerrada']);
+        return response()->json(['message' => 'Sesión cerrada']);
     }
 }

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const CoordinatorLogin = () => {
-  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const CoordinatorLogin = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post('/api/login/coordinator', {
-        name,
+        email,
         password,
       });
 
@@ -21,7 +21,7 @@ const CoordinatorLogin = () => {
       localStorage.setItem('role', data.rol || 'coordinator');
 
       // TODO: ajusta a la ruta real del panel del coordinador
-      navigate('/');
+      navigate('/coordinator-home', {replace:true});
     } catch (err) {
       // API puede devolver distintos formatos; cubrimos mensaje general y errores de campos
       if (err.response?.data?.errors?.name) {
@@ -45,8 +45,8 @@ const CoordinatorLogin = () => {
           <label className="block mb-1">Usuario</label>
           <input
             type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
             className="w-full p-2 border rounded"
           />
