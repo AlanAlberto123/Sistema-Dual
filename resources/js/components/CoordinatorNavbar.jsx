@@ -27,7 +27,7 @@ export default function Navbar() {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
       localStorage.removeItem("role");
-      localStorage.removeItem("student");
+      localStorage.removeItem("coordinator");
       navigate("/"); // tu ruta de login de estudiante
     }
   };
@@ -35,18 +35,9 @@ export default function Navbar() {
   return (
     <nav className="navbar navbar-expand bg-light border-bottom">
       <div className="container">
-        <NavLink className="navbar-brand" to="/students-home">
+        <NavLink className="navbar-brand" to="/coordinator-home">
           Sistema Dual
         </NavLink>
-
-        <div className="navbar-nav">
-          <NavLink
-            to="/inscripcion"
-            className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
-          >
-            Inscripciones
-          </NavLink>
-        </div>
 
         {isAuthed && (
           <button

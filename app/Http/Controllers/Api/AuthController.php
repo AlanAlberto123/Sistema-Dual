@@ -51,16 +51,15 @@ class AuthController extends Controller
     ]);
 
     $email = strtolower(trim($data['email']));
-    $user = User::whereRaw('LOWER(email) = ?', [$email])->first();
+    $user = User::whereRaw('LOWER(email) = ?', [$email])
+        ->with('coordinator')
+        ->first();
 
-    if (! $user) {
+    if (!$user || !Hash::check($data['password'], $user->password)) {
         throw ValidationException::withMessages(['email' => ['Credenciales inválidas.']]);
     }
-    if (! Hash::check($data['password'], $user->password)) {
-        throw ValidationException::withMessages(['email' => ['Credenciales inválidas.']]);
-    }
 
-    if ($user->role !== 'coordinator' /* || ! $user->coordinator()->exists() */) {
+    if ($user->role !== 'coordinator') {
         return response()->json(['error' => 'No autorizado'], 403);
     }
 
@@ -68,8 +67,10 @@ class AuthController extends Controller
 
     return response()->json([
         'access_token' => $token,
-        'user'  => $user,
-        'role'  => $user->role,
+        'token_type'   => 'Bearer',
+        'role'         => $user->role,
+        'user'         => $user->only(['id','name','email','role']),
+        'coordinator'  => $user->coordinator,
     ]);
 }
 

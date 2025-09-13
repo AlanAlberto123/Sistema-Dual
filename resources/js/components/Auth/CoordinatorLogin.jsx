@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Auth.css';
 
 const CoordinatorLogin = () => {
   const [email, setEmail] = useState('');
@@ -11,14 +12,14 @@ const CoordinatorLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/login/coordinator', {
-        email,
-        password,
-      });
-
+      const { data } = await axios.post('/api/login/coordinator', { email, password });
+      
       localStorage.setItem('token', data.access_token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      localStorage.setItem('role', data.rol || 'coordinator');
+      localStorage.setItem('role', data.role || 'coordinator');   // era data.rol
+      localStorage.setItem('coordinator', JSON.stringify(
+        data.coordinator ?? data.user?.coordinator ?? null
+      )); 
 
       // TODO: ajusta a la ruta real del panel del coordinador
       navigate('/coordinator-home', {replace:true});
@@ -37,47 +38,61 @@ const CoordinatorLogin = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 border rounded shadow">
-      <h2 className="text-2xl mb-4 text-center">Ingreso Coordinadores</h2>
-      {error && <p className="mb-4 text-red-600">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-1">Usuario</label>
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
+    <div className="login-container">
+      <div className="simple-banner">
+        <h1>Programa de Educación Dual</h1>
+        <p>Acceso a plataforma — Coordinadores</p>
+      </div>
 
-        <div className="flex gap-3">
+      <div className="login-panel">
+        <div className="tabs">
           <button
             type="button"
-            onClick={() => navigate('/')}
-            className="flex-1 py-2 border rounded hover:bg-gray-50"
+            className="tab"
+            onClick={() => navigate('/')} // ajusta si tu ruta es distinta
           >
-            Atrás
-          </button>
-          <button
-            type="submit"
-            className="flex-1 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Entrar
+            Estudiantes
           </button>
         </div>
-      </form>
+
+        {error && (
+          <p style={{ color: '#d32f2f', marginTop: 12, marginBottom: 0 }}>
+            {error}
+          </p>
+        )}
+
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label>Usuario (correo)</label>
+            <input
+              type="text"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="login-button">Entrar</button>
+
+          <button
+            type="button"
+            className="forgot-password"
+            onClick={() => navigate('/recuperar')}
+          >
+            Olvidé mi contraseña
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

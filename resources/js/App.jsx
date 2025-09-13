@@ -8,6 +8,7 @@ import StudentsHome from './components/StudentsPage/StudentsHome';
 import EnRoll from './components/StudentsPage/enRoll';
 import StudentLayout from './components/Layout/StudentLayout';
 import CoordinatorHome from './components/CoordinatorPage/CoordinatorHome';
+import CoordinatorLayout from './components/Layout/CoordinatorLayout';
 
 const root = document.getElementById('root');
 if (root) {
@@ -21,7 +22,9 @@ if (root) {
             <Route path="/students-home" element={<StudentsHome />} />
             <Route path="/inscripcion" element={<EnRoll />} />
           </Route>
-          <Route path="/coordinator-home" element={<CoordinatorHome />} />
+          <Route element={<CoordinatorLayout/>}>
+            <Route path="/coordinator-home" element={<CoordinatorHome />} />
+          </Route>
         </Routes>
       </Router>
     </React.StrictMode>,

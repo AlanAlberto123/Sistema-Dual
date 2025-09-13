@@ -1,39 +1,62 @@
-import { Link, NavLink } from "react-router-dom";
-
-const linkBase =
-  "px-3 py-1 rounded-md hover:bg-gray-100 transition";
-const active =
-  "font-medium ring-1 ring-gray-300 bg-gray-100";
+import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
+    const navigate = useNavigate();
+    const [isAuthed, setIsAuthed] = useState(false);
+
+     useEffect(() => {
+    setIsAuthed(!!localStorage.getItem("token"));
+  }, []);
+
+  const handleLogout = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      if (token) {
+        await axios.post(
+          "/api/logout",
+          {},
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+      }
+    } catch (e) {
+      // Si el token ya no es válido, igual limpiaremos cliente
+      // console.warn(e);
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      localStorage.removeItem("role");
+      localStorage.removeItem("student");
+      navigate("/"); // tu ruta de login de estudiante
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-white/80 backdrop-blur border-b">
-      <nav className="max-w-6xl mx-auto px-4 h-14 flex items-center justify-between">
-        <Link to="/" className="font-semibold">
+    <nav className="navbar navbar-expand bg-light border-bottom">
+      <div className="container">
+        <NavLink className="navbar-brand" to="/students-home">
           Sistema Dual
-        </Link>
+        </NavLink>
 
-        <div className="flex gap-2">
+        <div className="navbar-nav">
           <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              `${linkBase} ${isActive ? active : ""}`
-            }
-          >
-            Inicio
-          </NavLink>
-
-          <NavLink
-            to="/inscripciones"
-            className={({ isActive }) =>
-              `${linkBase} ${isActive ? active : ""}`
-            }
+            to="/inscripcion"
+            className={({ isActive }) => `nav-link ${isActive ? "active" : ""}`}
           >
             Inscripciones
           </NavLink>
         </div>
-      </nav>
-    </header>
+
+        {isAuthed && (
+          <button
+            className="btn btn-outline-danger btn-sm"
+            onClick={handleLogout}
+          >
+            Cerrar sesión
+          </button>
+        )}
+      </div>
+    </nav>
   );
 }

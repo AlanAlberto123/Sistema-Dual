@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import './Auth.css';
 
 const StudentLogin = () => {
   const [noControl, setNoControl] = useState('');
@@ -21,7 +22,6 @@ const StudentLogin = () => {
       localStorage.setItem('student', JSON.stringify(data.student));
       axios.defaults.headers.common['Authorization'] = `Bearer ${data.access_token}`;
 
-      // TODO: ajusta la ruta tras login de estudiante
       navigate('/students-home', { replace: true });
     } catch (err) {
       if (err.response?.data?.errors?.no_control) {
@@ -35,46 +35,65 @@ const StudentLogin = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-20 p-6 border rounded shadow">
-      <h2 className="text-2xl mb-4 text-center">Ingreso Estudiantes</h2>
-      {error && <p className="mb-4 text-red-600">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-1">No. de Control</label>
-          <input
-            type="number"
-            value={noControl}
-            onChange={(e) => setNoControl(e.target.value)}
-            required
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Contraseña</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="w-full p-2 border rounded"
-          />
+     <div className="login-container">
+      <div className="simple-banner">
+        <h1>Programa de Educación Dual</h1>
+        <p>Acceso a plataforma — Estudiantes</p>
+      </div>
+
+      <div className="login-panel">
+        <div className="tabs">
+          <button type="button" className="tab active">Estudiantes</button>
+          <button
+            type="button"
+            className="tab"
+            onClick={() => navigate('/login-coordinador')}
+          >
+            Coordinadores
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={() => navigate('/login-coordinador')}
-          className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700"
-        >
-          Coordinadores
-        </button>
+        {error && (
+          <p style={{ color: '#d32f2f', marginTop: 12, marginBottom: 0 }}>
+            {error}
+          </p>
+        )}
 
-        <button
-          type="submit"
-          className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Entrar
-        </button>
-      </form>
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="form-group">
+            <label>No. de Control</label>
+            {/* Usa type="text" para que aplique tu CSS (y no pierdas ceros a la izquierda). */}
+            <input
+              type="text"
+              inputMode="numeric"
+              pattern="\d*"
+              value={noControl}
+              onChange={(e) => setNoControl(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="form-group">
+            <label>Contraseña</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <button type="submit" className="login-button">Entrar</button>
+
+          <button
+            type="button"
+            className="forgot-password"
+            onClick={() => navigate('/recuperar')}
+          >
+            Olvidé mi contraseña
+          </button>
+        </form>
+      </div>
     </div>
   );
 };
