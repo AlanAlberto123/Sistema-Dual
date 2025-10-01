@@ -12,15 +12,28 @@ const StudentLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/login/student', {
+      const { data } = await axios.post('/api/auth/login/student', {
         no_control: noControl,
         password,
       });
 
-      localStorage.setItem('token', data.access_token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      localStorage.setItem('student', JSON.stringify(data.student));
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.access_token}`;
+       const token = data.token ?? data.access_token; // soporta ambos
+       if (token) {
+        localStorage.setItem('token', token);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+      } else {
+        localStorage.removeItem('token');
+      }
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user));
+      } else {
+        localStorage.removeItem('user');
+      }
+      if (data.student) {
+        localStorage.setItem('student', JSON.stringify(data.student));
+      } else {
+        localStorage.removeItem('student');
+      }
 
       navigate('/students-home', { replace: true });
     } catch (err) {

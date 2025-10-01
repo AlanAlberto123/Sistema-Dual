@@ -12,17 +12,31 @@ const CoordinatorLogin = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/login/coordinator', { email, password });
-      
-      localStorage.setItem('token', data.access_token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      localStorage.setItem('role', data.role || 'coordinator');   // era data.rol
-      localStorage.setItem('coordinator', JSON.stringify(
-        data.coordinator ?? data.user?.coordinator ?? null
-      )); 
+      const { data } = await axios.post('/api/auth/login/coordinator', { email, password });
 
-      // TODO: ajusta a la ruta real del panel del coordinador
-      navigate('/coordinator-home', {replace:true});
+// Soporta varias llaves de token (back viejo/nuevo)
+const token =
+  data.access_token ??
+  data.token ??
+  data.plainTextToken ??
+  null;
+
+if (!token) {
+  setError('El servidor no regresó token');
+  return; // evita navegar con token vacío
+}
+
+localStorage.setItem('token', token);
+
+// Guarda user y coordinator de forma robusta
+localStorage.setItem('user', JSON.stringify(
+  data.user ?? null
+));
+localStorage.setItem('coordinator', JSON.stringify(
+  data.coordinator ?? data.user?.coordinator ?? null
+));
+
+navigate('/coordinator-home', { replace: true });
     } catch (err) {
       // API puede devolver distintos formatos; cubrimos mensaje general y errores de campos
       if (err.response?.data?.errors?.name) {

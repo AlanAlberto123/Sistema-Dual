@@ -14,7 +14,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(\App\Contracts\Auth\PasswordVerifier::class, \App\Services\Auth\LaravelPasswordVerifier::class);
+        $this->app->bind(\App\Contracts\Auth\TokenIssuer::class, \App\Services\Auth\SanctumTokenIssuer::class);
     }
 
     /**
