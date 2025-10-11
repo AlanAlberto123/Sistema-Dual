@@ -16,7 +16,7 @@
 
 /* Banner simple */
 .simple-banner {
-  background: rgba(33, 150, 243, 0.9); color: white; text-align: center;
+  background: rgba(26, 83, 157, 0.9); color: white; text-align: center;
   padding: 20px; width: 100%; box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 .simple-banner h1 { margin: 0; font-size: 1.8rem; font-weight: 600; }
@@ -24,7 +24,7 @@
 
 /* Tarjeta */
 .login-panel {
-  background: #fff !important; border-radius: 8px !important; width: 350px !important;
+  background: #fff !important; border-radius: 8px !important; width: 500px !important;
   padding: 32px 24px !important; box-shadow: 0 4px 24px rgba(0,0,0,0.10) !important;
   margin: 40px 60px 0 0 !important;
   animation: apple-subir-panel 1s cubic-bezier(0.4, 0.2, 0.2, 1);
@@ -38,11 +38,11 @@
 }
 .tab {
   margin-top: 12px !important; padding: 10px 0 !important; width: 150px !important;
-  border-radius: 4px !important; border: none !important; background: #2196f3 !important;
+  border-radius: 4px !important; border: none !important; background: rgba(26, 83, 157, 0.9) !important;
   color: #fff !important; font-size: 1rem !important; font-weight: 500 !important;
   cursor: pointer !important; align-self: flex-start !important; transition: background 0.2s;
 }
-.tab.active { background: #1769aa !important; color: #fff !important; }
+.tab.active { background: rgba(26, 83, 157, 0.9) !important; color: #fff !important; }
 
 /* Form */
 .login-form {
@@ -60,7 +60,7 @@ input:focus { outline: none; border-color: #2196f3 !important; box-shadow: none 
 
 /* Forgot */
 .forgot-password {
-  background: none; border: none; color: #2196f3 !important; text-align: right;
+  background: none; border: none; color: rgba(26, 83, 157, 0.9) !important; text-align: right;
   font-size: 0.95rem; margin-top: 4px; cursor: pointer; text-decoration: underline !important;
   align-self: flex-end;
 }
@@ -68,7 +68,7 @@ input:focus { outline: none; border-color: #2196f3 !important; box-shadow: none 
 /* Botones */
 .login-button {
   margin-top: 12px !important; padding: 10px 0 !important; width: 100px !important;
-  border-radius: 4px !important; border: none !important; background: #2196f3 !important;
+  border-radius: 4px !important; border: none !important; background: rgba(26, 83, 157, 0.9) !important;
   color: #fff !important; font-size: 1rem !important; font-weight: 500 !important;
   cursor: pointer !important; align-self: flex-start !important; transition: background 0.2s;
 }

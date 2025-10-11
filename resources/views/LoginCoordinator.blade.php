@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Login Coordinador</title>
+  <title>Educacion Dual</title>
   @viteReactRefresh
   @vite('resources/js/App.jsx')
 </head>

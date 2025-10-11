@@ -64,6 +64,13 @@ const StudentLogin = () => {
           >
             Coordinadores
           </button>
+          <button
+            type="button"
+            className="tab"
+            onClick={() => navigate('/login-admin')}
+          >
+            Administrativos
+          </button>
         </div>
 
         {error && (

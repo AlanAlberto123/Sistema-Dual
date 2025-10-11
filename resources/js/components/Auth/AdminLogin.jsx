@@ -3,16 +3,16 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Auth.css';
 
-const CoordinatorLogin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
-  const navigate = useNavigate();
+const AdminLogin = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/auth/login/coordinator', { email, password });
+      const { data } = await axios.post('/api/auth/login/admin', { email, password });
 
 // Soporta varias llaves de token (back viejo/nuevo)
   const token =
@@ -28,15 +28,15 @@ if (!token) {
 
 localStorage.setItem('token', token);
 
-// Guarda user y coordinator de forma robusta
+// Guarda user y admin de forma robusta
 localStorage.setItem('user', JSON.stringify(
   data.user ?? null
 ));
-localStorage.setItem('coordinator', JSON.stringify(
-  data.coordinator ?? data.user?.coordinator ?? null
+localStorage.setItem('admin', JSON.stringify(
+  data.admin ?? data.user?.admin ?? null
 ));
 
-navigate('/coordinator-home', { replace: true });
+navigate('/admin-home', { replace: true });
     } catch (err) {
       // API puede devolver distintos formatos; cubrimos mensaje general y errores de campos
       if (err.response?.data?.errors?.name) {
@@ -55,7 +55,7 @@ navigate('/coordinator-home', { replace: true });
     <div className="login-container">
       <div className="simple-banner">
         <h1>Programa de Educación Dual</h1>
-        <p>Acceso a plataforma — Coordinadores</p>
+        <p>Acceso a plataforma — Administradores</p>
       </div>
 
       <div className="login-panel">
@@ -70,9 +70,9 @@ navigate('/coordinator-home', { replace: true });
           <button
             type="button"
             className="tab"
-            onClick={() => navigate('/login-admin')} // ajusta si tu ruta es distinta
+            onClick={() => navigate('/login-coordinador')}
           >
-            Administrativo
+            Coordinadores
           </button>
         </div>
 
@@ -118,4 +118,4 @@ navigate('/coordinator-home', { replace: true });
   );
 };
 
-export default CoordinatorLogin;
+export default AdminLogin;

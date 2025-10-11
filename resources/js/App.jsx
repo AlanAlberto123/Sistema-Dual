@@ -9,6 +9,7 @@ import EnRoll from './components/StudentsPage/enRoll';
 import StudentLayout from './components/Layout/StudentLayout';
 import CoordinatorHome from './components/CoordinatorPage/CoordinatorHome';
 import CoordinatorLayout from './components/Layout/CoordinatorLayout';
+import AdminLogin from './components/Auth/AdminLogin';
 
 const root = document.getElementById('root');
 if (root) {
@@ -18,6 +19,7 @@ if (root) {
         <Routes>
           <Route path="/" element={<StudentLogin />} />
           <Route path="/login-coordinador" element={<CoordinatorLogin />} />
+          <Route path="/login-admin" element={<AdminLogin/>} />
           <Route element={<StudentLayout />}>
             <Route path="/students-home" element={<StudentsHome />} />
             <Route path="/inscripcion" element={<EnRoll />} />

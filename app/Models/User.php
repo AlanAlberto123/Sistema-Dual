@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\Student;
 use App\Models\Coordinator;
+use App\Models\Admin;
 
 
 class User extends Authenticatable
@@ -24,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'rol'
     ];
 
     /**
@@ -59,5 +61,10 @@ class User extends Authenticatable
     public function coordinator()
     {
         return $this->hasOne(Coordinator::class, 'user_id');
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class, 'user_id');
     }
 }
