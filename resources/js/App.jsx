@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import StudentLogin from './components/Auth/StudentLogin';
 import CoordinatorLogin from './components/Auth/CoordinatorLogin';
 import StudentsHome from './components/StudentsPage/StudentsHome';
-import EnRoll from './components/StudentsPage/enRoll';
+import EnRoll from './components/StudentsPage/EnRoll.jsx';
 import StudentLayout from './components/Layout/StudentLayout';
 import CoordinatorHome from './components/CoordinatorPage/CoordinatorHome';
 import CoordinatorLayout from './components/Layout/CoordinatorLayout';
